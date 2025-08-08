@@ -1,44 +1,41 @@
 <div *ngIf="showProducts">
     <div class="card" >
-        <p-dataview #dv [value]="products"  [rows]="5" [paginator]="true">
-            <ng-template pTemplate="header">
-                <div class="flex justify-content-between align-items-center">
-                    <p-button *ngIf="userLogged?.role === 'admin'" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        <i class="fa-solid fa-plus"></i>
-                    </p-button>
-                    <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
-                </div>
-            </ng-template>
-            <ng-template let-product pTemplate="listItem">
+        <div>
+            <div class="flex justify-content-between align-items-center">
+                <button *ngIf="userLogged?.role === 'admin'" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
                 <div class="col-12">
-                    <div class="flex p-2 gap-4">
-                        <img class="w-4 lg:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="product.image" [alt]="product.name" />
-                        <div class="gap-3 flex justify-content-between align-items-center xl:align-items-start flex-1 xl:gap-4">
-                            <div class="flex gap-3 flex-column">
-                                <div class="text-2xl font-bold text-700">{{ product.name }}</div>
-                                <div class="align-items-center gap-3">
+                    @for (product of products; track product.id) {
+                        <div class="flex p-2 gap-4">
+                            <img class="w-4 lg:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="product.image" [alt]="product.name" />
+                            <div class="gap-3 flex justify-content-between align-items-center xl:align-items-start flex-1 xl:gap-4">
+                                <div class="flex gap-3 flex-column">
+                                    <div class="text-2xl font-bold text-700">{{ product.name }}</div>
+                                    <div class="align-items-center gap-3">
+                                        <span class="flex align-items-center gap-2">
+                                            <i class="pi pi-tag"></i>
+                                            <span class="font-semibold">{{ product.brand }}</span>
+                                        </span>
+                                        <span>{{product.category}}</span>
+                                    </div>
                                     <span class="flex align-items-center gap-2">
-                                        <i class="pi pi-tag"></i>
-                                        <span class="font-semibold">{{ product.brand }}</span>
+                                        <span class="font-light">{{ product.weight }}{{product.unity.toUpperCase()}}</span>
                                     </span>
-                                    <p-tag [value]="product.category" ></p-tag>
                                 </div>
-                                <span class="flex align-items-center gap-2">
-                                    <span class="font-light">{{ product.weight }}{{product.unity.toUpperCase()}}</span>
-                                </span>
-                            </div>
-                            <div class="flex-column xl:flex align-items-end sm:align-items-end gap-3 sm:gap-2">
-                                <span class="text-2xl font-semibold">{{ '$' + product.price }}</span>
-                                <div *ngIf="userLogged?.role === 'admin'">
-                                    <span data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="editProduct(product.codebar)" style="margin-right: 10px;"><i class="penEdit fa-solid fa-pen"></i></span>
-                                    <span (click)="deleteProduct(product.codebar)"><i class="trashDelete fa-solid fa-trash"></i></span>
+                                <div class="flex-column xl:flex align-items-end sm:align-items-end gap-3 sm:gap-2">
+                                    <span class="text-2xl font-semibold">{{ '$' + product.price }}</span>
+                                    <div *ngIf="userLogged?.role === 'admin'">
+                                        <span data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="editProduct(product.codebar)" style="margin-right: 10px;"><i class="penEdit fa-solid fa-pen"></i></span>
+                                        <span (click)="deleteProduct(product.codebar)"><i class="trashDelete fa-solid fa-trash"></i></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
-            </ng-template>
-            <ng-template let-product pTemplate="gridItem">
+            @for (product of products; track product.id) {
                 <div class="col-3 sm:col-2 lg:col-3 xl:col-2 p-2">
                     <div class="p-4 border-1 surface-border surface-card border-round">
                         <div class="flex flex-wrap align-items-center justify-content-between gap-2">
@@ -46,7 +43,7 @@
                                 <i class="pi pi-tag"></i>
                                 <span class="font-semibold">{{ product.brand }}</span>
                             </span>
-                            <p-tag [value]="product.category" ></p-tag>
+                            <span>{{product.category}}</span>
                         </div>
                         <div class="flex flex-column align-items-center gap-3 py-5">
                             <img class="w-9 shadow-2 border-round" [src]="product.image" [alt]="product.name" />
@@ -58,65 +55,103 @@
                         </div>
                     </div>
                 </div>
-            </ng-template>
-        </p-dataview>
+            }
+            </div>
+        </div>
     </div>
-</div>
+<div>
+    
+<!-- 
+<div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+    <a href="#">
+        <img class="p-8 rounded-t-lg" src="/docs/images/products/apple-watch.png" alt="product image" />
+    </a>
+    <div class="px-5 pb-5">
+        <a href="#">
+            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport</h5>
+        </a>
+        <div class="flex items-center mt-2.5 mb-5">
+            <div class="flex items-center space-x-1 rtl:space-x-reverse">
+                <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                </svg>
+                <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                </svg>
+                <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                </svg>
+                <svg class="w-4 h-4 text-yellow-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                </svg>
+                <svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                </svg>
+            </div>
+            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-sm dark:bg-blue-200 dark:text-blue-800 ms-3">5.0</span>
+        </div>
+        <div class="flex items-center justify-between">
+            <span class="text-3xl font-bold text-gray-900 dark:text-white">$599</span>
+            <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</a>
+        </div>
+    </div>
+</div> -->
 
+</div>
 <div>
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">{{labelModal}}</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetModal()"></button>
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">{{labelModal}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetModal()"></button>
+              </div>
+              <div class="modal-body">
+                  <form [formGroup]="form">
+                      <div class="containterAddProduct">
+                          <span class="p-float-label">
+                              <input  type="text" pInputText formControlName="name" id="name" class="widthInput" />
+                              <label htmlFor="name">Nombre</label>
+                          </span>
+                          <span class="p-float-label">
+                              <input type="text" pInputText formControlName="brand" id="brand" />
+                              <label htmlFor="brand">Marca</label>
+                          </span>
+                          <span class="p-float-label">
+                              <input type="text" pInputText formControlName="category" id="category" class="widthInput" />
+                              <label htmlFor="category">Categoria</label>
+                          </span>
+                          <span class="p-float-label">
+                              <input type="text" pInputText formControlName="codebar" id="codebar" class="widthInput" />
+                              <label htmlFor="codebar">Código de barras</label>
+                          </span>
+                          <span class="p-float-label">
+                              <input type="text" pInputText formControlName="image" id="image" class="widthInput" />
+                              <label htmlFor="image">Imagen</label>
+                          </span>
+                          <span>
+                              <img [src]="form.value.image" alt="" width="150px" height="150px">
+                          </span>
+                          <span class="p-float-label">
+                              <input type="text" pInputText formControlName="price" id="price" class="widthInput" />
+                              <label htmlFor="price">Precio</label>
+                          </span>
+                          <span class="p-float-label">
+                              <input type="text" pInputText formControlName="weight" id="weight" class="widthInput" />
+                              <label htmlFor="weight">Peso</label>
+                          </span>
+                          <span class="p-float-label">
+                              <input type="text" pInputText formControlName="unity" id="unity" class="widthInput" />
+                              <label htmlFor="unity">Unidad</label>
+                          </span>
+                      </div>
+                  </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" #buttonClose data-bs-dismiss="modal" (click)="resetModal()">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="saveProduct()">Guardar</button>
+              </div>
             </div>
-            <div class="modal-body">
-                <form [formGroup]="form">
-                    <div class="containterAddProduct">
-                        <span class="p-float-label">
-                            <input  type="text" pInputText formControlName="name" id="name" class="widthInput" />
-                            <label htmlFor="name">Nombre</label>
-                        </span>
-                        <span class="p-float-label">
-                            <input type="text" pInputText formControlName="brand" id="brand" />
-                            <label htmlFor="brand">Marca</label>
-                        </span>
-                        <span class="p-float-label">
-                            <input type="text" pInputText formControlName="category" id="category" class="widthInput" />
-                            <label htmlFor="category">Categoria</label>
-                        </span>
-                        <span class="p-float-label">
-                            <input type="text" pInputText formControlName="codebar" id="codebar" class="widthInput" />
-                            <label htmlFor="codebar">Código de barras</label>
-                        </span>
-                        <span class="p-float-label">
-                            <input type="text" pInputText formControlName="image" id="image" class="widthInput" />
-                            <label htmlFor="image">Imagen</label>
-                        </span>
-                        <span>
-                            <img [src]="form.value.image" alt="" width="150px" height="150px">
-                        </span>
-                        <span class="p-float-label">
-                            <input type="text" pInputText formControlName="price" id="price" class="widthInput" />
-                            <label htmlFor="price">Precio</label>
-                        </span>
-                        <span class="p-float-label">
-                            <input type="text" pInputText formControlName="weight" id="weight" class="widthInput" />
-                            <label htmlFor="weight">Peso</label>
-                        </span>
-                        <span class="p-float-label">
-                            <input type="text" pInputText formControlName="unity" id="unity" class="widthInput" />
-                            <label htmlFor="unity">Unidad</label>
-                        </span>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" #buttonClose data-bs-dismiss="modal" (click)="resetModal()">Cerrar</button>
-              <button type="button" class="btn btn-primary" (click)="saveProduct()">Guardar</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 </div>

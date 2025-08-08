@@ -17,6 +17,14 @@ export class SuppliersComponent {
   public rows = 10;
   public labelModal = 'Agregar proveedor';
   public isEdit = false;
+  public headers = [
+    {label: 'Proveedor', key: 'name'},
+    {label: 'Categoría afip', key: 'categoryAfip'},
+    {label: 'Categoría', key: 'categoryProducts'},
+    {label: 'Ciudad', key: 'city'},
+    {label: 'Cuit',  key: 'cuit'},
+    {label: 'Celular', key: 'phoneNumber'},
+  ]
 
   public idSupplier = '';
 
@@ -34,8 +42,9 @@ export class SuppliersComponent {
   getSuppliers(){
     this.supplierService.getSuppliers().subscribe(res=>{
       this.suppliers = res;
-  })
+    })
   }
+  
 
   next() {
     this.first = this.first + this.rows;
@@ -90,7 +99,7 @@ export class SuppliersComponent {
   })
   }
 
-  deleteSuppliers(suppliersId:string){
+  deleteSuppliers(suppliersId:string | any){
     this.supplierService.deleteSupplier(suppliersId).subscribe(res =>{
       this.resetModal();
       return this.getSuppliers();
@@ -98,7 +107,7 @@ export class SuppliersComponent {
     err=> err)
   }
 
-  editSuppliers(supplierId:string){
+  editSuppliers(supplierId:string | any){
     this.idSupplier = supplierId;
     this.isEdit = true;
     this.labelModal = 'Editar proveedor'

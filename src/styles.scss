@@ -1,5 +1,26 @@
-// @import "primeng/resources/themes/lara-light-blue/theme.css";
-// @import "primeng/resources/primeng.css";
+@import url("tailwindcss");
+
+.background{
+    background-color: #fff;
+}
+
+body.dark{
+    background-color: #1a202c;
+    color: #cacaca !important;
+    border-color: #fff !important;
+    .form-signin{
+        background-color: #2d3748;
+    }
+    .text-body-secondary{
+        color: #cacaca !important;
+    }
+    .information-seller, .details, .client, .head-body, .invoicelist-footer, .info{
+        border-color: #fff !important;
+    }
+    .background{
+        background-color: #1a202c !important;
+    }
+}
 
 .button{
     color: #ffffff;
@@ -18,4 +39,27 @@
 .trashDelete{
     cursor: pointer;
     color: #fc0f0f;
+}
+
+.main-router {
+    margin: 75px 10px 10px 90px;
+}
+@media (max-width: 960px) {
+    .main-router {
+        margin: 10px 10px 120px 10px;
+    }
+}
+
+.icon-default{
+    width: 24px;
+    height: 24px;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+.icon-default:hover {
+    color: #007bff;
 }

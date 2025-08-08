@@ -17,6 +17,16 @@ export class ClientComponent {
   public idSupplier = '';
   public isEdit = false;
   public rows = 10;
+  public headers = [
+      {label: 'Nombre', key: 'name'},
+      {label: 'Apellido', key: 'lastName'},
+      {label: 'Identificación', key: 'identification'},
+      {label: 'Ciudad', key: 'city'},
+      {label: 'cuil', key: 'cuil'},
+      {label: 'Teléfono',  key: 'phoneNumber'},
+      {label: 'Fecha de nacimiento', key: 'birthdate'},
+  ]
+
 
   constructor(
     private clientServices: ClienteService,
@@ -77,7 +87,7 @@ export class ClientComponent {
         this.buttonClose.first.nativeElement.click();
         this.getClient();
       },
-      err=>console.log(err)
+      err=>err
     )
     
   }
@@ -86,7 +96,7 @@ export class ClientComponent {
     this.createNewClient();
   }
 
-  deleteClient(suppliersId:string){
+  deleteClient(suppliersId:string | any){
       this.clientServices.deleteClient(suppliersId).subscribe(res =>{
         return this.getClient();
       },
@@ -94,7 +104,7 @@ export class ClientComponent {
     )
   }
 
-  editClient(supplierId:string){
+  editClient(supplierId:string | any){
     this.idSupplier = supplierId;
     this.isEdit = true;
     this.labelModal = 'Editar cliente'

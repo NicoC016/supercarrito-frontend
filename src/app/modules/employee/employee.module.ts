@@ -2,11 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EmployeeComponent } from './components/employee.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
-import { TableModule } from 'primeng/table';
 import { EmployeeService } from './services/employee.service';
-import { ButtonModule } from 'primeng/button';
 import { ReactiveFormsModule } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
+import { SharedModule } from '@shared/shared.module';
 
 
 @NgModule({
@@ -15,9 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
     CommonModule,
     ReactiveFormsModule,
     EmployeeRoutingModule,
-    TableModule,
-    ButtonModule,
-    InputTextModule,
+    SharedModule,
   ],
   providers:[EmployeeService]
 })

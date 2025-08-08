@@ -1,40 +1,55 @@
-<div class="container-navigation" >
-    <p-menubar [model]="items">
-        <ng-template pTemplate="start">
-            <img src="../assets/img/supercarrito-logo-2.png" height="40" class="mr-2" />
-        </ng-template>
-        <ng-template pTemplate="end">
-            <ng-container>
-                @if (isLoggedUser) {
-                    <button class="button" [hidden]="isLogin" (click)="goTo('login')">Login</button>
-                } @else {
-                    <div class="menu-logged">
-                        <button class="button" (click)="logout()" >Logout</button>
-                    </div>
-                }
-            </ng-container>
-        </ng-template>
-    </p-menubar>
+<div class="fixed h-full top-[61px] z-5 transition-[width] ease-out background" [ngClass]="{'w-55': isOpen, 'w-15': !isOpen}">
+	<section class="border-r border-gray-200 h-full">
+		<ul class="!pl-2 pt-2">
+			<li (click)="openMenuBurger()">
+				<span class="inline-flex space-x-4 hover:bg-gray-200 rounded-md p-2" [ngClass]="{'hover:bg-gray-800': !isDark}">
+					<span class="w-6 h-6 flex items-center justify-center">
+						@if (isOpen){
+							<icons [iconName]="'x'"></icons>
+						}@else {
+							<icons [iconName]="'bars'"></icons>
+						}
+					</span>
+				</span>
+			</li>
+			@for (item of menuItems; track item.id) {
+				<li>
+					@if (item.visible) {
+						<span 
+							(click)="changeMenu(item.id, item.routerLink)"
+							  class="inline-flex space-x-4 hover:bg-gray-700 rounded-md p-2"
+							  [ngClass]="{'bg-gray-700': item.active, 'hover:bg-gray-200': isDark, 'hover:bg-gray-700': !isDark}"
+						>
+							<span class="w-6 h-6 flex items-center justify-center">
+								<icons [iconName]="item.icon"></icons>
+							</span>
+							@if (isOpen) {
+							  	<span class="whitespace-nowrap ml-2 w-28" >
+							    	<span>
+										{{ item.label }}								
+									</span>
+								</span>
+							}
+						</span>
+					}
+				</li>
+			}
+		</ul>
+	</section>
 </div>
-
-<div class="container-navigation-mobile">
-    <div class="nav">
-        <div class="nav-item" [ngClass]="{'active': menuItemsActive.home}" (click)="changeMenu('home')">
-            <i class="material-icons home-icon pi pi-home"></i>
-            <span class="nav-text">Inicio</span>
-        </div>
-        <div class="nav-item"  [ngClass]="{'active': menuItemsActive.favourite}" (click)="changeMenu('favourite')">
-            <i class="material-icons favorite-icon pi pi-heart"></i>
-            <span class="nav-text">Favoritos</span>
-        </div>
-        <div class="nav-item" [ngClass]="{'active': menuItemsActive.listProducts}" (click)="changeMenu('listProducts')">
-            <i class="material-icons products-icon pi pi-search"></i>
-            <span class="nav-text">Productos</span>
-        </div>
-        <div class="nav-item" [ngClass]="{'active': menuItemsActive.profile}" (click)="changeMenu('profile')">
-            <i class="material-icons person-icon pi pi-user"></i>
-            <span class="nav-text">Perfil</span>
-        </div>
-      </div>
+<div class="w-full h-[61px] fixed top-0 z-1 pl-2 pr-7 flex justify-between gap-5 items-center border-b border-gray-200 background">
+	<section>
+		<img src="../assets/img/supercarrito-logo.png" class=" w-13 rounded"/>
+	</section>
+	<section>
+		<span class="cursor-pointer" (click)="toggleDark()">
+			<span class="w-6 h-6 flex items-center justify-center">
+				@if (isDark){
+					<icons [iconName]="'moon_stars'"></icons>
+				}@else {
+					<icons [iconName]="'sunny'"></icons>
+				}
+			</span>
+		</span>
+	</section>
 </div>
-

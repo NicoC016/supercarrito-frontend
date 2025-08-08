@@ -1,0 +1,28 @@
+<div class="mb-3">
+    <button type="button" icon="fa-solid fa-chevron-left" (click)="prev()" [disabled]="isFirstPage()"></button>
+    <button type="button" icon="fa-solid fa-refresh" (click)="reset()"></button>
+    <button type="button" icon="fa-solid fa-chevron-right" (click)="next()" [disabled]="isLastPage()"></button>
+</div>
+<table class="table table-striped table-bordered table-hover" [ngClass]="{'table-dark ': isDarkMode()}">
+    <thead>
+        <tr>
+            @for (header of headersTr; track header) {
+                <th>{{ header.label }}</th>
+            }
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (body of bodyTd; track body) {
+            <tr>
+                @for (header of headersTr; track header) {
+                    <td>{{ body[header.key] }}</td>
+                }
+                <td data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="editEmployeed flex gap-3 h-10">
+                    <i class="penEdit fa-solid fa-pen" (click)="edit(body)"></i>
+                    <i class="trashDelete fa-solid fa-trash" (click)="delete(body)"></i>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

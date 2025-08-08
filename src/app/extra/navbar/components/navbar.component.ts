@@ -1,90 +1,69 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
-import { MenubarModule } from 'primeng/menubar'
-import { StyleClassModule } from 'primeng/styleclass';
+import { IMenuItems } from '../models/menu-items.model';
+import { changeDarkMode, createNavbarMenuItems, getColorSchemaDefautl, isDarkMode } from '../helpers/navbar.helper';
+import { IUserInfo } from '../models/user-info.model';
+import { SharedModule } from '@shared/shared.module';
 
 @Component({
     selector: 'navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss'],
     standalone: true,
-    imports: [CommonModule, MenubarModule, StyleClassModule]
+    imports: [CommonModule, SharedModule]
 })
 export class NavbarComponent {
-  
-  public items: MenuItem[] = [];
-  public activeItem: MenuItem = {} ;
-  public isLoggedUser = localStorage.getItem('userData') !== '';
-  public user = '';
-  public isLogin = false;
-  public userInfo:any;
+  	public menuItems: IMenuItems[] = [];
+  	public isLoggedUser = false;
+  	public user:string = '';
+  	public isLogin = false;
+  	public userInfo:IUserInfo = {role: '', email: ''};
+  	public isOpen = false;
+	public isDark = isDarkMode();
+  	constructor(public router:Router){
+ 	}
 
-  public menuItemsActive:any = {
-    home:true,
-    profile:false,
-    favourite:false,
-    listProducts:false,
-  }
+ 	ngOnInit() {
+		getColorSchemaDefautl();
+		const dataUser = localStorage.getItem('userData');
+		this.isLoggedUser = dataUser !== null &&  dataUser !== '';
+    	if( this.isLoggedUser && dataUser ){this.setDataLocalStorageLoggedUser(dataUser)};
+		this.menuItems = createNavbarMenuItems(this.userInfo, this.isLoggedUser);
+		const path = window.location.pathname.split('/')[1];
+    	this.menuItems.forEach(item => item.active = item.routerLink === path);
+  	}
 
-  constructor(public router:Router){
-    const path = window.location.pathname.split('/')[1];
-    if(this.menuItemsActive[path] !== undefined) {
-      this.menuItemsActive = {
-        home:false,
-        profile:false,
-        favourite:false,
-        listProducts:false,
-      };
-      this.menuItemsActive[path] = true;
-    }
-  }
+	setDataLocalStorageLoggedUser(userInfo: string) {
+      	this.userInfo = JSON.parse(userInfo !!);
+      	this.user = this.userInfo?.email.split('@')[0];
+	}
 
-  ngOnInit() {
-    if(window.location.pathname === '/login')this.isLogin = true;
-    if(this.isLoggedUser ){
-      const data = localStorage.getItem('userData');
-      this.userInfo = JSON.parse(data !!);
-      this.user = this.userInfo.email.split('@')[0];
-      this.items = [
-          { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink:'home'},
-          { label: 'Empleados', icon: 'pi pi-fw pi-users', routerLink:'employeed', visible: this.userInfo.role === 'admin'},
-          { label: 'Facturar', icon: 'fa-solid fa-file-invoice', routerLink:'bill' },
-          { label: 'Clientes', icon: 'pi pi-fw pi-user',routerLink:'client', visible: this.userInfo.role === 'admin' },
-          { label: 'Proveedores', icon: 'pi pi-fw pi-truck',routerLink:'suppliers', visible: this.userInfo.role === 'admin' },
-          { label: 'Productos', icon: 'fa-solid fa-box',routerLink:'listProducts' },
-      ];
-      this.activeItem = this.items[0];
-    }else{
-      this.items = [
-        { label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink:'/' },
-      ];
-      this.activeItem = this.items[0];
-    }
-  }
+ 	openMenuBurger(){
+    	this.isOpen = !this.isOpen;
+  	}
 
-  changeMenu(tab:'home'|'profile'|'favourite'|'listProducts'){
-    this.menuItemsActive = {
-      home:false,
-      profile:false,
-      favourite:false,
-      listProducts:false,
-    };
-    this.menuItemsActive[tab] = true;
-    this.goTo(tab);
-  }
+  	changeMenu(id:number, tab:string) {
+    	this.menuItems.forEach(item => item.active = item.id === id);
+		this.isOpen = false;
+    	this.goTo(tab);
+  	}
 
-  onActiveItemChange(event: any) {
-      this.activeItem = event;
-  }
-  goTo(route:any){
-    this.router.navigate([route]);
-  }
+  	goTo(route:string){
+		if(route === 'logout') {
+			this.logout();
+			this.router.navigate(['home']);
+		}
+      	this.router.navigate([route]);
+  	}
 
-  logout(){
-    localStorage.setItem('userData', '');
-    location.reload();
-  }
+  	logout(){
+    	localStorage.removeItem('userData');
+  	}
 
+	toggleDark() {
+    	this.isDark = isDarkMode();
+		localStorage.setItem('theme', this.isDark ? 'light' : 'dark');
+    	changeDarkMode(!this.isDark);
+  	}
 }

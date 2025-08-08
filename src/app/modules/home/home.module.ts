@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './components/home.component';
 import { HomeRoutingModule } from './home-routing.module';
 
-import { ButtonModule } from 'primeng/button';
-
 
 
 @NgModule({
@@ -12,7 +10,6 @@ import { ButtonModule } from 'primeng/button';
   imports: [
     CommonModule,
     HomeRoutingModule,
-    ButtonModule
     
   ]
 })

@@ -19,7 +19,6 @@ input:focus {
     margin-right: 7px;
 }
 .container-bill{
-    margin: 23px 40px 0px 65px;
     .header-bill{
         .header-editable{
             display: flex;
@@ -86,13 +85,14 @@ input:focus {
         
         .invoicelist-body {
             font-size: 1rem;
+            margin: 0 !important;
+            padding: 0 !important;
             .head-body{
                 border: 1px solid #000;
-                right: 12px;
                 position: relative;
             }
             table{
-                width: 101.7%;
+                width: 100%;
             }
             th , td {
                 position: relative;

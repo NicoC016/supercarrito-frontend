@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ProductService } from '../../products/services/product.service';
+import { FlashMessageService } from 'flash-message-sc';
 
 @Component({
     selector: 'app-consulting-price',
@@ -17,6 +18,7 @@ export class ConsultingPriceComponent {
   constructor(
     public formBuilder:FormBuilder,
     public productService:ProductService,
+    private flashMessageService: FlashMessageService
   ){}
   ngOnInit(): void {
     this.createForm();
@@ -37,7 +39,7 @@ export class ConsultingPriceComponent {
         this.showProducts = true;
       }
     },err=> {
-      err
+      this.flashMessageService.show({message: 'Error al buscar el producto', type: 'error', duration: 3000});
     })
   }
 }
